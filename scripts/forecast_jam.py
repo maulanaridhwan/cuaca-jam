@@ -130,13 +130,14 @@ def safe_transform_weather_labels(encoder, weather_groups):
 # ================== MODEL LOADING ==================
 def find_model_files():
     """Find model files in various locations"""
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # Folder script
+    project_root = os.path.dirname(script_dir)  # Folder utama (root project)
     
     possible_paths = [
-        os.path.join(script_dir, "models"),
-        os.path.join(script_dir, "..", "models"),
-        script_dir,
-        "models",
+        project_root,  # Folder utama (./)
+        os.path.join(script_dir, "models"),  # Kalau ada folder models di script
+        os.path.join(script_dir, "..", "models"),  # Kalau ada folder models di root
+        "models",  # Relatif dari working directory
         "/app/models",  # Railway specific path
         "/opt/render/project/src/models",  # Render specific path
     ]
@@ -151,9 +152,11 @@ def find_model_files():
     found_files = {}
     
     for base_path in possible_paths:
+        logger.info(f"Checking path: {base_path}")  # Tambah logging buat debug
         if not os.path.exists(base_path):
+            logger.warning(f"Path does not exist: {base_path}")
             continue
-            
+        
         for file_type, filename in required_files.items():
             if file_type in found_files:
                 continue
