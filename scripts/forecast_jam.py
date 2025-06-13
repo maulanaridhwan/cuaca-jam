@@ -13,9 +13,24 @@ import pytz
 import tempfile
 from functools import lru_cache
 import threading
+# Add CORS import
+from flask_cors import CORS
+
 
 # Flask app setup
 app = Flask(__name__)
+# Enable CORS for specific origins
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://sandtara-trip.vercel.app",
+            "http://localhost:5173",
+            "http://localhost:3000"
+        ],
+        "methods": ["GET", "OPTIONS"],  # Allow GET and OPTIONS (for preflight)
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Setup logging untuk Railway
 logging.basicConfig(
