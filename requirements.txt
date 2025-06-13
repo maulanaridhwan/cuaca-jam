@@ -7,3 +7,4 @@ requests>=2.25.0
 apscheduler>=3.9.0
 pytz>=2021.3
 flask>=2.0.0
+flask-cors>=3.0.10
